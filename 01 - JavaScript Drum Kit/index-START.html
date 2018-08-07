@@ -59,6 +59,29 @@
 
 <script>
 
+function playAudio(keyCode){
+  const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+  const key = document.querySelector(`.key[data-key="${keyCode}"]`);
+  if(audio){
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  }
+}
+
+let keys = document.querySelectorAll('.key');
+keys.forEach(key => {
+  key.addEventListener('transitionend', function(e) {
+    if(e.propertyName == 'transform')
+      this.classList.remove('playing');
+  })
+  key.addEventListener('click', function(e) {
+    playAudio(this.dataset.key)
+  })
+})
+window.addEventListener('keydown', e => {
+  playAudio(e.keyCode)
+});
 </script>
 
 
