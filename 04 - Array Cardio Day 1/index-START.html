@@ -29,30 +29,47 @@
 
     const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel', 'Beddoes, Mick', 'Beecher, Henry', 'Beethoven, Ludwig', 'Begin, Menachem', 'Belloc, Hilaire', 'Bellow, Saul', 'Benchley, Robert', 'Benenson, Peter', 'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony', 'Bennington, Chester', 'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd', 'Berger, Ric', 'Bergman, Ingmar', 'Berio, Luciano', 'Berle, Milton', 'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra', 'Berra, Yogi', 'Berry, Halle', 'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin', 'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose', 'Biko, Steve', 'Billings, Josh', 'Biondo, Frank', 'Birrell, Augustine', 'Black, Elk', 'Blair, Robert', 'Blair, Tony', 'Blake, William'];
 
+    let answers = [];
+
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
-
+    answers[1] = inventors.filter(p => p.year >= 1500 && p.year <= 1599)
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
-
+    answers[2] = inventors.map(p => `${p.first} ${p.last}`)
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    answers[3] = inventors.sort((a,b) => a.year > b.year ? 1 : -1)
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
+    answers[4] = inventors.reduce((total, p) => total + p.passed - p.year, 0)
 
     // 5. Sort the inventors by years lived
+    answers[5] = inventors.sort((a,b) => a.passed - a.year > b.passed - b.year ? 1 : -1)
+    // add the years to the objects
+    // answers[5] = answers[5].map(p => {p.years = p.passed - p.year; return p})
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
 
+    const category = document.querySelector('.mw-category');
+    const links = Array.from(category.querySelectorAll('a'));
+    const de = links.map( link => link.textContent)
+                    .filter( streetname => streetname.includes('de'))
+
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
-
+    answers[7] = people.sort((a,b) => a.split(', ')[0] > b.split(', ') [0] ? 1 : -1)
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+    answers[8] = data.reduce((result, dat) => {
+      //add one or initialize to one if undefined+1 == NaN
+      result[dat] = result[dat] + 1 || 1;
+      return result;
+    }, {})
 
   </script>
 </body>
