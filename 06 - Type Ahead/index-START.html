@@ -30,19 +30,20 @@
 
   function onChange(e){
     const regex = new RegExp(this.value, 'gi')
-    const html = data
-              .filter(place => place.city.match(regex) || place.state.match(regex))
-              .map(place => {
+    const html = data.reduce( (html, place) => {
+      if(place.city.match(regex) || place.state.match(regex)) {
         const cityMatch = place.city.replace(regex, `<span class="hl">${this.value}</span>`)
         const stateMatch = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
-
-      return `
+        html +=  `
       <li>
         <span class="name">${cityMatch}, ${stateMatch}</span>
         <span class="population">${Number(place.population).toLocaleString('en')}</span>
       </li>`
-    })
-    output.innerHTML = html.join('');
+      }
+
+      return html
+    }, '')
+    output.innerHTML = html;
   }
 
 
