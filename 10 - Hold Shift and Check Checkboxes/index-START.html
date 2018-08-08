@@ -99,6 +99,34 @@
   </div>
 
 <script>
+  const checkboxes = [...document.querySelectorAll('input')];
+  checkboxes.forEach(box => {
+    box.addEventListener('click', handleClick)
+  })
+
+  let lastIndex = 0;
+
+  function selectBetween(newIndex) {
+    let start = newIndex > lastIndex ? lastIndex : newIndex;
+    let end = newIndex < lastIndex ? lastIndex : newIndex;
+    checkboxes.forEach( (box, index) => {
+      if (index > start && index < end) {
+        box.checked = true
+      }
+    })
+  }
+
+  function handleClick (e) {
+    const index = checkboxes.indexOf(this);
+    console.log("with Shift pressed?", e.shiftKey)
+
+    if(this.checked) {
+      if(e.shiftKey && lastChecked) {
+        selectBetween(index);
+      }
+      lastIndex = index;
+    }
+  }
 </script>
 </body>
 </html>

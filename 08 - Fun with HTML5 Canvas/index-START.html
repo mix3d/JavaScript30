@@ -5,13 +5,61 @@
   <title>HTML5 Canvas</title>
 </head>
 <body>
-<canvas id="draw" width="800" height="800"></canvas>
+  <h3>CanvasPad</h3>
+<canvas id="draw" width="800" height="600"></canvas>
 <script>
+  const canvas = document.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+
+  ctx.width = window.innerWidth;
+  ctx.height = window.innerHeight;
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineWidth = 50;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  let lastX=0, lastY=0;
+  let color = 0;
+  let dampvelocity = 0;
+
+  function distance(pt1, pt2){
+    console.log(pt1,pt2)
+    return Math.sqrt(Math.pow(pt2[0] - pt1[0], 2) + Math.pow(pt2[1] - pt1[1], 2))
+  }
+
+  function draw(e) {
+    dampvelocity = (dampvelocity*2 + distance([lastX, lastY], [e.offsetX, e.offsetY])) / 3;
+    ctx.strokeStyle = `hsl(${dampvelocity*2 + 90}, 100%, 50%)`;
+    ctx.lineWidth = 2 + dampvelocity*2;
+    console.log(dampvelocity)
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY)
+    ctx.lineTo(e.offsetX, e.offsetY)
+    ctx.stroke();
+
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+  }
+
+  canvas.addEventListener('mousedown', e => {
+    [lastX, lastY] = [e.offsetX, e.offsetY]
+    canvas.addEventListener('mousemove', draw);
+  });
+  canvas.addEventListener('mouseup', e => {
+    canvas.removeEventListener('mousemove', draw)
+  });
+  canvas.addEventListener('mouseout', e => {
+    canvas.removeEventListener('mousemove', draw)
+  });
 </script>
 
 <style>
   html, body {
     margin:0;
+    padding:10px;
+    text-align: center;
+  }
+  canvas {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
 </style>
 
