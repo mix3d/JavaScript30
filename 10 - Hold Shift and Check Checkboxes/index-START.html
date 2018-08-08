@@ -104,27 +104,52 @@
     box.addEventListener('click', handleClick)
   })
 
-  let lastIndex = 0;
+  //Index based approach
+  // let lastIndex = 0;
+  // function selectBetween(newIndex) {
+  //   let start = newIndex > lastIndex ? lastIndex : newIndex;
+  //   let end = newIndex < lastIndex ? lastIndex : newIndex;
+  //   checkboxes.forEach( (box, index) => {
+  //     if (index > start && index < end) {
+  //       box.checked = true
+  //     }
+  //   })
+  // }
 
-  function selectBetween(newIndex) {
-    let start = newIndex > lastIndex ? lastIndex : newIndex;
-    let end = newIndex < lastIndex ? lastIndex : newIndex;
-    checkboxes.forEach( (box, index) => {
-      if (index > start && index < end) {
-        box.checked = true
-      }
-    })
-  }
+  // function handleClick (e) {
+  //   const index = checkboxes.indexOf(this);
+  //   console.log("with Shift pressed?", e.shiftKey)
+  //   if(this.checked) {
+  //     if(e.shiftKey) {
+  //       selectBetween(index);
+  //     }
+  //     lastIndex = index;
+  //   }
+  // }
+
+  // Object based approach
+  let lastChecked = null;
 
   function handleClick (e) {
-    const index = checkboxes.indexOf(this);
-    console.log("with Shift pressed?", e.shiftKey)
-
+    // Check if the box was checked true first.
     if(this.checked) {
+      //If they're holding the shift key AND there is a saved last checked box
       if(e.shiftKey && lastChecked) {
-        selectBetween(index);
+        let inbetween = false;
+        checkboxes.forEach(box => {
+          if(box === this || box === lastChecked){
+            inbetween = !inbetween;
+          }
+          if(inbetween){
+            box.checked = true;
+          }
+        })
       }
-      lastIndex = index;
+      lastChecked = this;
+    }
+    //If UNchecked, then don't save it's position for the next click.
+    else{
+      lastChecked = null;
     }
   }
 </script>
